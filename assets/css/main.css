@@ -372,7 +372,7 @@ body { font-family: 'DM Sans', sans-serif; overflow-x: hidden; }
 
 .news-swiper-wrap { padding-bottom: 40px; }
 
-.news-swiper { overflow: visible; }
+.news-swiper { overflow: hidden; }
 .news-swiper .swiper-wrapper { align-items: stretch; }
 .news-swiper .swiper-slide { height: auto; }
 
@@ -504,13 +504,13 @@ a.contact-card-value:hover { color: #60a5fa; }
 
 #scroll-top {
   position: fixed;
-  bottom: max(20px, env(safe-area-inset-bottom, 0px) + 16px);
-  left: 16px;
-  right: auto;
+  bottom: calc(max(20px, env(safe-area-inset-bottom, 0px) + 16px) + 68px);
+  left: auto;
+  right: 20px;
   z-index: 999;
-  width: 40px;
-  height: 40px;
-  border-radius: 10px;
+  width: 48px;
+  height: 48px;
+  border-radius: 9999px;
   background: #2563eb;
   color: #fff;
   border: none;
@@ -524,19 +524,13 @@ a.contact-card-value:hover { color: #60a5fa; }
   pointer-events: none;
   transition: opacity .25s ease, transform .25s ease, background .2s, box-shadow .2s;
 }
-@media (min-width: 640px) {
+@media (min-width: 1024px) {
   #scroll-top {
     bottom: 28px;
-    left: 28px;
+    right: 28px;
     width: 44px;
     height: 44px;
     border-radius: 12px;
-  }
-}
-@media (min-width: 1024px) {
-  #scroll-top {
-    left: auto;
-    right: 28px;
   }
 }
 #scroll-top.visible {

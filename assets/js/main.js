@@ -73,10 +73,16 @@ if (statNums.length) {
 
 if (document.querySelector('.news-swiper')) {
   new Swiper('.news-swiper', {
-    slidesPerView: 1.15,
+    slidesPerView: 1,
     spaceBetween: 16,
-    loop: false,
+    loop: true,
     grabCursor: true,
+    allowTouchMove: true,
+    autoplay: {
+      delay: 4000,
+      disableOnInteraction: false,
+      pauseOnMouseEnter: true,
+    },
     pagination: {
       el: '.news-swiper-pagination',
       clickable: true,
