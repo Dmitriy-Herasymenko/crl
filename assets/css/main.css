@@ -637,6 +637,20 @@ a.contact-card-value:hover { color: #60a5fa; }
 
 .has-dropdown { position: relative; }
 
+/* Invisible bridge over the gap between the nav button and the dropdown.
+   Lives on .has-dropdown (always pointer-events: auto) rather than on
+   .dropdown itself, since .dropdown has pointer-events: none while closed
+   and couldn't otherwise sustain the hover as the cursor crosses the gap. */
+.has-dropdown::after {
+  content: '';
+  position: absolute;
+  top: 100%;
+  left: 0;
+  height: 6px;
+  width: 100%;
+  min-width: 300px;
+}
+
 .dropdown {
   position: absolute;
   top: calc(100% + 6px);
