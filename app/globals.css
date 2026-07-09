@@ -960,3 +960,62 @@ a.contact-card-value:hover { color: #60a5fa; }
 .dark .btn-outline { border-color: #334155 !important; color: #cbd5e1 !important; }
 .dark .btn-outline:hover { background: #2563eb; color: #fff !important; }
 }
+
+/* Bare-URL links inside article content (see formatRawLinks in wp-transform.mjs).
+   Deliberately kept outside @layer components — new rules added inside that
+   (very large) layer were silently dropped by the production CSS bundler;
+   this component doesn't need to lose specificity ties to Tailwind utilities
+   the way the rest of the file does, so living outside the layer is safe. */
+:root { --raw-link-bg: #eff6ff; --raw-link-bg-hover: #dbeafe; --raw-link-fg: #1d4ed8; }
+.dark:root { --raw-link-bg: #1e293b; --raw-link-bg-hover: #263449; --raw-link-fg: #60a5fa; }
+
+.raw-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  max-width: 100%;
+  padding: 8px 14px;
+  margin: 2px 0;
+  background: var(--raw-link-bg);
+  border-radius: 10px;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--raw-link-fg);
+  text-decoration: none;
+  transition: background .15s;
+}
+.raw-link:hover { background: var(--raw-link-bg-hover); }
+.raw-link-icon { flex-shrink: 0; }
+.raw-link-text {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* WP "su-custom-gallery" photo blocks inside article content (see
+   formatGalleries in wp-transform.mjs) */
+.wp-gallery {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+  margin: 24px 0;
+}
+@media (min-width: 640px) {
+  .wp-gallery { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}
+.wp-gallery-item {
+  display: block;
+  aspect-ratio: 1 / 1;
+  border-radius: 12px;
+  overflow: hidden;
+  background: #f3f4f6;
+}
+.wp-gallery-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  margin: 0;
+  transition: transform .3s;
+}
+.wp-gallery-item:hover img { transform: scale(1.06); }
+.dark .wp-gallery-item { background: #1e293b; }

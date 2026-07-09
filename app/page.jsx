@@ -1,22 +1,42 @@
 import Link from 'next/link';
 import StatCounter from '@/components/StatCounter';
 import NewsCarousel from '@/components/NewsCarousel';
-import { getNewsBySlug } from '@/lib/news';
+import { fetchPostBySlug } from '@/lib/wp-api.mjs';
+import { CATEGORY_NOVYNY, CATEGORY_PORADY, transformPost } from '@/lib/wp-transform.mjs';
+
+// Data is cached for REVALIDATE_SECONDS and refreshed in the background —
+// see app/novyny/page.jsx for why.
+const REVALIDATE_SECONDS = 45;
+
+const FEATURED_SLUG = '100-zhyttya-cherkasy';
 
 const CAROUSEL_SLUGS = [
-  { slug: 'gid-veteraniv-medychni-garantiyi-2026', badge: 'НСЗУ', badgeClass: 'bg-green-100 text-green-700' },
-  { slug: 'nszu-skladni-operatsiyi-na-sertsi-2026', badge: 'Кардіологія', badgeClass: 'bg-red-100 text-red-700' },
-  { slug: '12-travnya-den-medychnoyi-sestry', badge: 'Свято', badgeClass: 'bg-pink-100 text-pink-700' },
-  { slug: 'perelik-dostupni-liky-nszu', badge: 'Ліки', badgeClass: 'bg-blue-100 text-blue-700' },
+  { slug: 'natsionalna-sluzhba-zdorov-ya-ukrayiny-pidgotuvala-gid-dlya-veteraniv-prostymy-slovamy-pro-medychni-garantiyi-2026', badge: 'НСЗУ', badgeClass: 'bg-green-100 text-green-700' },
+  { slug: 'nszu-skladni-operatsiyi-na-sertsi-u-2026-rotsi-novi-pidhody-do-oplaty-ta-kontsentratsiyi-dopomogy', badge: 'Кардіологія', badgeClass: 'bg-red-100 text-red-700' },
+  { slug: '12-travnya-mizhnarodnyj-den-medychnoyi-sestry', badge: 'Свято', badgeClass: 'bg-pink-100 text-pink-700' },
+  { slug: 'perelik-likarskyh-zasobiv-shho-pidlyagayut-reimbursatsiyi-u-mezhah-programy-dostupni-liky-nszu', badge: 'Ліки', badgeClass: 'bg-blue-100 text-blue-700' },
 ];
 
-const featured = getNewsBySlug('100-zhyttya-cherkasy');
-const carouselSlides = CAROUSEL_SLUGS.map(({ slug, badge, badgeClass }) => {
-  const post = getNewsBySlug(slug);
-  return { slug, badge, badgeClass, image: post.image, date: post.date, title: post.title, excerpt: post.excerpt };
-});
+function mapImageUrl(wpUrl) {
+  return `/api/media?src=${encodeURIComponent(wpUrl)}`;
+}
 
-export default function HomePage() {
+async function getPostBySlug(slug) {
+  const rawPost = await fetchPostBySlug(slug, [CATEGORY_NOVYNY, CATEGORY_PORADY], { next: { revalidate: REVALIDATE_SECONDS } });
+  return rawPost ? transformPost(rawPost, mapImageUrl) : null;
+}
+
+export default async function HomePage() {
+  const [featured, ...carouselPosts] = await Promise.all([
+    getPostBySlug(FEATURED_SLUG),
+    ...CAROUSEL_SLUGS.map(({ slug }) => getPostBySlug(slug)),
+  ]);
+
+  const carouselSlides = CAROUSEL_SLUGS.map(({ slug, badge, badgeClass }, i) => {
+    const post = carouselPosts[i];
+    return { slug, badge, badgeClass, image: post.image, date: post.date, title: post.title, excerpt: post.excerpt };
+  });
+
   return (
     <>
       {/* ══════════ HERO ══════════ */}
@@ -385,7 +405,7 @@ export default function HomePage() {
               </div>
             </a>
 
-            <Link href="/novyny/perelik-dostupni-liky-nszu" className="svc-card2 reveal d1">
+            <Link href="/novyny/perelik-likarskyh-zasobiv-shho-pidlyagayut-reimbursatsiyi-u-mezhah-programy-dostupni-liky-nszu" className="svc-card2 reveal d1">
               <span className="svc-ico2 svc-ico2--green">
                 <svg fill="none" stroke="currentColor" strokeWidth="1.5" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4" /></svg>
               </span>

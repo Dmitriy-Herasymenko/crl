@@ -1,11 +1,8 @@
 'use client';
 
 import { useEffect } from 'react';
-import { usePathname } from 'next/navigation';
 
 export default function ScrollReveal() {
-  const pathname = usePathname();
-
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
@@ -19,10 +16,24 @@ export default function ScrollReveal() {
       { threshold: 0.07, rootMargin: '0px 0px -24px 0px' }
     );
 
-    document.querySelectorAll('.reveal:not(.in), .reveal-r:not(.in)').forEach((el) => observer.observe(el));
+    const observeAll = () => {
+      document.querySelectorAll('.reveal:not(.in), .reveal-r:not(.in)').forEach((el) => observer.observe(el));
+    };
 
-    return () => observer.disconnect();
-  }, [pathname]);
+    observeAll();
+
+    // Client-side navigations that only change search params (filters, sort,
+    // search, pagination) keep the same pathname, so watching pathname alone
+    // misses newly rendered .reveal elements — they'd sit at opacity:0
+    // forever. Watch the DOM directly instead, which catches every case.
+    const mutationObserver = new MutationObserver(observeAll);
+    mutationObserver.observe(document.body, { childList: true, subtree: true });
+
+    return () => {
+      observer.disconnect();
+      mutationObserver.disconnect();
+    };
+  }, []);
 
   return null;
 }
