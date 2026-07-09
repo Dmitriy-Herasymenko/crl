@@ -776,7 +776,15 @@ a.contact-card-value:hover { color: #60a5fa; }
   border-top: 1px solid transparent;
 }
 #mob.open {
-  max-height: 900px;
+  /* The header is position:sticky, so its box stays pinned to the top of the
+     viewport during scroll — content taller than the viewport can never be
+     reached by scrolling the page itself. Cap the panel to the space below
+     the 68px top bar and let it scroll internally instead. */
+  max-height: calc(100vh - 68px);
+  max-height: calc(100dvh - 68px);
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior: contain;
   opacity: 1;
   border-top-color: #f1f5f9;
 }
