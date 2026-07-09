@@ -3,16 +3,16 @@
 import { useEffect, useRef, useState, useTransition } from 'react';
 import { useRouter } from 'next/navigation';
 
-function buildHref({ category, sort, q }) {
+function buildHref({ basePath, category, sort, q }) {
   const sp = new URLSearchParams();
   if (category && category !== 'all') sp.set('category', category);
   if (sort && sort !== 'newest') sp.set('sort', sort);
   if (q) sp.set('q', q);
   const qs = sp.toString();
-  return qs ? `/novyny?${qs}` : '/novyny';
+  return qs ? `${basePath}?${qs}` : basePath;
 }
 
-export default function NewsSearchInput({ initialQuery, category, sort }) {
+export default function NewsSearchInput({ initialQuery, category, sort, basePath = '/novyny' }) {
   const [value, setValue] = useState(initialQuery);
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
@@ -38,7 +38,7 @@ export default function NewsSearchInput({ initialQuery, category, sort }) {
     const timeout = setTimeout(() => {
       pendingOwnUpdate.current = true;
       startTransition(() => {
-        router.replace(buildHref({ category, sort, q: value }), { scroll: false });
+        router.replace(buildHref({ basePath, category, sort, q: value }), { scroll: false });
       });
     }, 350);
     return () => clearTimeout(timeout);

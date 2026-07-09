@@ -14,6 +14,14 @@ export default function Header() {
   const isIstoriya = pathname === '/istoriya-zakladu';
   const isFotogalereya = pathname === '/fotogalereya';
   const isNovyny = pathname === '/novyny' || pathname.startsWith('/novyny/');
+  const isPorady = pathname === '/porady-likarya';
+  const isTyYak = pathname === '/ty-yak';
+  const isVaktsynatsiya = pathname === '/vaktsynatsiya-vid-covid-19';
+  const isPlatniPoslugy = pathname === '/platni-poslugy';
+  const isFinansovaDiyalnist = pathname === '/finansova-diyalnist';
+  const isAnalizGospodarskoyi = pathname === '/analiz-gospodarskoyi-diyalnosti';
+  const isZalyshkyLikiv = pathname === '/zalyshky-likarskyh-zasobiv-za-derzhavni-koshty';
+  const isObgruntuvannya = pathname === '/obgruntuvannya-2';
   const isProLikarnyu = isZagalna || isAdministratsiya || isLitsenzijniDokumenty || isViddilennya || isIstoriya || isFotogalereya;
 
   const [navOn, setNavOn] = useState(false);
@@ -210,7 +218,7 @@ export default function Header() {
                 onMouseEnter={() => setOpenMenu('public')}
                 onMouseLeave={() => setOpenMenu((v) => (v === 'public' ? null : v))}
               >
-                <button className="nav-link nav-link--dropdown" aria-haspopup="true" aria-expanded={openMenu === 'public'}>
+                <button className={`nav-link nav-link--dropdown${isPlatniPoslugy || isFinansovaDiyalnist || isAnalizGospodarskoyi || isZalyshkyLikiv || isObgruntuvannya ? ' nav-link--active' : ''}`} aria-haspopup="true" aria-expanded={openMenu === 'public'}>
                   Публічна інформація
                   <svg className="nav-chevron" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24" aria-hidden="true">
                     <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
@@ -219,24 +227,24 @@ export default function Header() {
                 <div className="dropdown dropdown--wide" role="menu">
                   <div className="dropdown-section">
                     <p className="dropdown-label">Фінанси та звітність</p>
-                    <a href="https://uman.crl.net.ua/platni-poslugy/" target="_blank" className="dropdown-item" role="menuitem">
+                    <Link href="/platni-poslugy" className={`dropdown-item${isPlatniPoslugy ? ' dropdown-item--active' : ''}`} role="menuitem">
                       <span className="dropdown-icon">
                         <svg fill="none" stroke="currentColor" strokeWidth="1.5" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" /></svg>
                       </span>
                       Платні послуги
-                    </a>
-                    <a href="https://uman.crl.net.ua/finansova-diyalnist/" target="_blank" className="dropdown-item" role="menuitem">
+                    </Link>
+                    <Link href="/finansova-diyalnist" className={`dropdown-item${isFinansovaDiyalnist ? ' dropdown-item--active' : ''}`} role="menuitem">
                       <span className="dropdown-icon">
                         <svg fill="none" stroke="currentColor" strokeWidth="1.5" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" /></svg>
                       </span>
                       Фінансова діяльність
-                    </a>
-                    <a href="https://uman.crl.net.ua/analiz-gospodarskoyi-diyalnosti/" target="_blank" className="dropdown-item" role="menuitem">
+                    </Link>
+                    <Link href="/analiz-gospodarskoyi-diyalnosti" className={`dropdown-item${isAnalizGospodarskoyi ? ' dropdown-item--active' : ''}`} role="menuitem">
                       <span className="dropdown-icon">
                         <svg fill="none" stroke="currentColor" strokeWidth="1.5" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M16 8v8m-4-5v5m-4-2v2m-2 4h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
                       </span>
                       Аналіз госп. діяльності
-                    </a>
+                    </Link>
                     <a href="https://uman.crl.net.ua/nadhodzhennya-i-vykorystannya-blagodijnyh-vneskiv/" target="_blank" className="dropdown-item" role="menuitem">
                       <span className="dropdown-icon">
                         <svg fill="none" stroke="currentColor" strokeWidth="1.5" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" /></svg>
@@ -246,18 +254,18 @@ export default function Header() {
                   </div>
                   <div className="dropdown-section dropdown-section--border">
                     <p className="dropdown-label">Закупівлі</p>
-                    <a href="https://uman.crl.net.ua/zalyshky-likarskyh-zasobiv-za-derzhavni-koshty/" target="_blank" className="dropdown-item" role="menuitem">
+                    <Link href="/zalyshky-likarskyh-zasobiv-za-derzhavni-koshty" className={`dropdown-item${isZalyshkyLikiv ? ' dropdown-item--active' : ''}`} role="menuitem">
                       <span className="dropdown-icon">
                         <svg fill="none" stroke="currentColor" strokeWidth="1.5" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" /></svg>
                       </span>
                       Залишки лікарських засобів
-                    </a>
-                    <a href="https://uman.crl.net.ua/obgruntuvannya-2/" target="_blank" className="dropdown-item" role="menuitem">
+                    </Link>
+                    <Link href="/obgruntuvannya-2" className={`dropdown-item${isObgruntuvannya ? ' dropdown-item--active' : ''}`} role="menuitem">
                       <span className="dropdown-icon">
                         <svg fill="none" stroke="currentColor" strokeWidth="1.5" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" /></svg>
                       </span>
                       Обгрунтування, відкриті торги
-                    </a>
+                    </Link>
                     <a href="https://e-tender.ua/prozoro" target="_blank" className="dropdown-item dropdown-item--external" role="menuitem">
                       <span className="dropdown-icon">
                         <svg fill="none" stroke="currentColor" strokeWidth="1.5" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" /></svg>
@@ -273,7 +281,7 @@ export default function Header() {
                 onMouseEnter={() => setOpenMenu('pubs')}
                 onMouseLeave={() => setOpenMenu((v) => (v === 'pubs' ? null : v))}
               >
-                <button className={`nav-link nav-link--dropdown${isNovyny ? ' nav-link--active' : ''}`} aria-haspopup="true" aria-expanded={openMenu === 'pubs'}>
+                <button className={`nav-link nav-link--dropdown${isNovyny || isPorady || isTyYak || isVaktsynatsiya ? ' nav-link--active' : ''}`} aria-haspopup="true" aria-expanded={openMenu === 'pubs'}>
                   Публікації
                   <svg className="nav-chevron" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24" aria-hidden="true">
                     <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
@@ -287,24 +295,24 @@ export default function Header() {
                       </span>
                       Новини
                     </Link>
-                    <a href="https://uman.crl.net.ua/category/porady-likarya/" target="_blank" className="dropdown-item" role="menuitem">
+                    <Link href="/porady-likarya" className={`dropdown-item${isPorady ? ' dropdown-item--active' : ''}`} role="menuitem">
                       <span className="dropdown-icon">
                         <svg fill="none" stroke="currentColor" strokeWidth="1.5" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" /></svg>
                       </span>
                       Поради лікаря
-                    </a>
-                    <a href="https://uman.crl.net.ua/category/ty-yak/" target="_blank" className="dropdown-item" role="menuitem">
+                    </Link>
+                    <Link href="/ty-yak" className={`dropdown-item${isTyYak ? ' dropdown-item--active' : ''}`} role="menuitem">
                       <span className="dropdown-icon">
                         <svg fill="none" stroke="currentColor" strokeWidth="1.5" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
                       </span>
                       Ти як?
-                    </a>
-                    <a href="https://uman.crl.net.ua/category/vaktsynatsiya-vid-covid-19/" target="_blank" className="dropdown-item" role="menuitem">
+                    </Link>
+                    <Link href="/vaktsynatsiya-vid-covid-19" className={`dropdown-item${isVaktsynatsiya ? ' dropdown-item--active' : ''}`} role="menuitem">
                       <span className="dropdown-icon">
                         <svg fill="none" stroke="currentColor" strokeWidth="1.5" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4" /></svg>
                       </span>
                       Вакцинація від COVID-19
-                    </a>
+                    </Link>
                     <a href="https://uman.crl.net.ua/korysni-posylannya/" target="_blank" className="dropdown-item" role="menuitem">
                       <span className="dropdown-icon">
                         <svg fill="none" stroke="currentColor" strokeWidth="1.5" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" /></svg>
@@ -363,15 +371,16 @@ export default function Header() {
             </div>
             <div className="mob-section">
               <p className="mob-label">Публічна інформація</p>
-              <a href="https://uman.crl.net.ua/platni-poslugy/" target="_blank" className="mob-item">Платні послуги</a>
-              <a href="https://uman.crl.net.ua/finansova-diyalnist/" target="_blank" className="mob-item">Фінансова діяльність</a>
+              <Link href="/platni-poslugy" onClick={closeMobile} className={`mob-item${isPlatniPoslugy ? ' mob-item--active' : ''}`}>Платні послуги</Link>
+              <Link href="/finansova-diyalnist" onClick={closeMobile} className={`mob-item${isFinansovaDiyalnist ? ' mob-item--active' : ''}`}>Фінансова діяльність</Link>
               <a href="https://e-tender.ua/prozoro" target="_blank" className="mob-item">Держзакупівлі Prozorro ↗</a>
             </div>
             <div className="mob-section">
               <p className="mob-label">Публікації</p>
               <Link href="/novyny" onClick={closeMobile} className={`mob-item${isNovyny ? ' mob-item--active' : ''}`}>Новини</Link>
-              <a href="https://uman.crl.net.ua/category/porady-likarya/" target="_blank" className="mob-item">Поради лікаря</a>
-              <a href="https://uman.crl.net.ua/category/vaktsynatsiya-vid-covid-19/" target="_blank" className="mob-item">Вакцинація</a>
+              <Link href="/porady-likarya" onClick={closeMobile} className={`mob-item${isPorady ? ' mob-item--active' : ''}`}>Поради лікаря</Link>
+              <Link href="/ty-yak" onClick={closeMobile} className={`mob-item${isTyYak ? ' mob-item--active' : ''}`}>Ти як?</Link>
+              <Link href="/vaktsynatsiya-vid-covid-19" onClick={closeMobile} className={`mob-item${isVaktsynatsiya ? ' mob-item--active' : ''}`}>Вакцинація</Link>
             </div>
             <div className="mob-actions">
               <Link href="/#contacts" onClick={closeMobile} className="mob-cta" id="mob-cta-link">Записатись</Link>

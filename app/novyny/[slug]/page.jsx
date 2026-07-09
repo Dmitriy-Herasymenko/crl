@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { fetchPostBySlug, fetchPosts } from '@/lib/wp-api.mjs';
-import { CATEGORY_NOVYNY, CATEGORY_PORADY, transformPost } from '@/lib/wp-transform.mjs';
+import { CATEGORY_NOVYNY, CATEGORY_PORADY, CATEGORY_TY_YAK, CATEGORY_VAKTSYNATSIYA, transformPost } from '@/lib/wp-transform.mjs';
 import ShareButtons from '@/components/ShareButtons';
 
 // Data is cached for REVALIDATE_SECONDS and refreshed in the background —
@@ -18,7 +18,7 @@ function mapImageUrl(wpUrl) {
 }
 
 async function getPost(slug) {
-  const rawPost = await fetchPostBySlug(slug, [CATEGORY_NOVYNY, CATEGORY_PORADY], { next: { revalidate: REVALIDATE_SECONDS } });
+  const rawPost = await fetchPostBySlug(slug, [CATEGORY_NOVYNY, CATEGORY_PORADY, CATEGORY_TY_YAK, CATEGORY_VAKTSYNATSIYA], { next: { revalidate: REVALIDATE_SECONDS } });
   return rawPost ? transformPost(rawPost, mapImageUrl) : null;
 }
 
