@@ -32,19 +32,60 @@ function GroupIcon({ name }) {
 // Картки — bg-[#ffffff] (не bg-white), щоб не конфліктувати з `.dark .bg-white`.
 const CARD = 'border bg-[#ffffff] dark:bg-slate-800 border-blue-200 dark:border-slate-700';
 
+// Заглушка для тултипа. Пізніше кожному пакету можна додати власне поле `desc`.
+const PLACEHOLDER_DESC =
+  'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.';
+
 export default function DashboardPackages({ groups, year }) {
   const [openIndex, setOpenIndex] = useState(null);
   const current = openIndex === null ? null : groups[openIndex];
 
   return (
-    <div className="bg-[#eef2f6] dark:bg-slate-900 p-6 lg:p-10">
+    <div className="bg-[#eef2f6] dark:bg-slate-900 p-6 lg:p-10 rounded-b-2xl lg:rounded-b-none lg:rounded-r-2xl">
       <style>{`
         @keyframes pmgFadeUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
         @keyframes pmgFadeIn { from { opacity: 0; } to { opacity: 1; } }
         .pmg-view { animation: pmgFadeIn .25s ease both; }
         .pmg-item { animation: pmgFadeUp .4s cubic-bezier(.16,1,.3,1) both; }
+
+        /* Tooltip — default (mobile / md / lg): above the row, right-aligned, never leaves the panel */
+        .pmg-tip {
+          position: absolute;
+          z-index: 30;
+          right: 0;
+          bottom: calc(100% + 8px);
+          width: 18rem;
+          max-width: calc(100% - 1rem);
+          opacity: 0;
+          pointer-events: none;
+          transform: translate(0, 6px);
+          transition: opacity .15s ease, transform .15s ease;
+        }
+        .pmg-row:hover .pmg-tip,
+        .pmg-row:focus-within .pmg-tip {
+          opacity: 1;
+          transform: translate(0, 0);
+        }
+        /* xl+: room to the right — show it beside the row, no overlap */
+        @media (min-width: 1280px) {
+          .pmg-tip {
+            right: auto;
+            bottom: auto;
+            left: calc(100% + 14px);
+            top: 50%;
+            width: 17rem;
+            max-width: none;
+            transform: translate(8px, -50%);
+          }
+          .pmg-row:hover .pmg-tip,
+          .pmg-row:focus-within .pmg-tip { transform: translate(0, -50%); }
+        }
         @media (prefers-reduced-motion: reduce) {
           .pmg-view, .pmg-item { animation: none !important; }
+          .pmg-tip { transition: opacity .15s ease; transform: translate(0, 0); }
+          @media (min-width: 1280px) {
+            .pmg-tip { transform: translate(0, -50%); }
+          }
         }
       `}</style>
       {current === null ? (
@@ -91,14 +132,29 @@ export default function DashboardPackages({ groups, year }) {
             <span className="flex-1 text-[15px] font-700 text-slate-900 dark:text-slate-100 leading-snug">{current.title}</span>
           </div>
 
-          <div className="flex flex-col gap-2">
+          <div className="flex flex-col gap-2 xl:max-w-[460px]">
             {current.items.map((item, i) => (
               <div
                 key={item.no}
                 style={{ animationDelay: `${80 + i * 50}ms` }}
-                className={`pmg-item rounded-xl px-5 py-3.5 text-sm text-slate-700 dark:text-slate-200 leading-snug ${CARD}`}
+                className={`pmg-item pmg-row group/row relative flex items-center gap-3 rounded-xl px-5 py-3.5 text-sm text-slate-700 dark:text-slate-200 leading-snug transition-colors cursor-pointer hover:border-blue-400 dark:hover:border-slate-600 ${CARD}`}
+                tabIndex={0}
               >
-                {item.name}
+                <span className="flex-1">{item.name}</span>
+
+                <span className="flex-shrink-0 text-blue-500 dark:text-blue-400 group-hover/row:text-blue-600 dark:group-hover/row:text-blue-300 transition-colors" aria-hidden="true">
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="1.75" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  </svg>
+                </span>
+
+                {/* Тултип — з правого боку рядка (на вузьких екранах — зверху). Позиція керується CSS .pmg-tip */}
+                <span
+                  role="tooltip"
+                  className="pmg-tip rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 px-3.5 py-2.5 text-xs leading-relaxed text-slate-600 dark:text-slate-300 shadow-xl"
+                >
+                  {item.desc || PLACEHOLDER_DESC}
+                </span>
               </div>
             ))}
           </div>
