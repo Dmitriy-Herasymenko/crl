@@ -1,0 +1,160 @@
+import Link from 'next/link';
+import DashboardPackages from './DashboardPackages';
+
+export const metadata = {
+  title: 'Програма медичних гарантій — Уманська центральна районна лікарня',
+  description:
+    'Програма медичних гарантій — перелік та обсяг медичних послуг, ліків і медвиробів, які держава гарантує населенню та оплачує з державного бюджету.',
+};
+
+// Плейсхолдер-контент дашборду. Текст і посилання будуть змінені пізніше.
+const DASHBOARD = {
+  updatedAt: '09.09.2026',
+  title: 'Пакети медичних послуг за договором із НСЗУ на 2026 рік',
+};
+
+// Пакети медичних послуг, законтрактовані за договором із НСЗУ.
+// Дата змін: 2026 рік. Згідно контрактування 2026 року.
+const PACKAGES_YEAR = 2026;
+const PACKAGE_GROUPS = [
+  {
+    title: 'Стаціонарна допомога та реабілітація',
+    icon: 'bed',
+    items: [
+      { no: 3, name: 'Хірургічні операції дорослим та дітям у стаціонарних умовах' },
+      { no: 4, name: 'Стаціонарна допомога дорослим та дітям без проведення хірургічних операцій' },
+      { no: 47, name: 'Хірургічні операції дорослим та дітям в умовах стаціонару одного дня' },
+      { no: 53, name: 'Реабілітаційна допомога дорослим і дітям у стаціонарних умовах' },
+    ],
+  },
+  {
+    title: 'Невідкладні стани',
+    icon: 'pulse',
+    items: [
+      { no: 5, name: 'Медична допомога при гострому мозковому інсульті' },
+      { no: 6, name: 'Медична допомога при гострому інфаркті міокарда' },
+    ],
+  },
+  {
+    title: 'Вагітність і пологи',
+    icon: 'baby',
+    items: [
+      { no: 7, name: 'Медична допомога при пологах' },
+      { no: 35, name: 'Ведення вагітності в амбулаторних умовах' },
+    ],
+  },
+  {
+    title: 'Амбулаторна та стоматологічна допомога',
+    icon: 'tooth',
+    items: [
+      { no: 9, name: 'Профілактика, діагностика, спостереження та лікування в амбулаторних умовах' },
+      { no: 34, name: 'Стоматологічна допомога дорослим та дітям' },
+    ],
+  },
+  {
+    title: 'Інструментальна діагностика',
+    icon: 'scan',
+    items: [
+      { no: 10, name: 'Мамографія' },
+      { no: 11, name: 'Гістероскопія' },
+      { no: 12, name: 'Езофагогастродуоденоскопія' },
+      { no: 13, name: 'Колоноскопія' },
+      { no: 14, name: 'Цистоскопія' },
+      { no: 15, name: 'Бронхоскопія' },
+    ],
+  },
+  {
+    title: 'Паліативна допомога',
+    icon: 'heart',
+    items: [
+      { no: 23, name: 'Стаціонарна паліативна медична допомога дорослим і дітям' },
+      { no: 24, name: 'Мобільна паліативна медична допомога дорослим і дітям' },
+    ],
+  },
+  {
+    title: 'Специфічні стани та психічне здоров’я',
+    icon: 'brain',
+    items: [
+      { no: 21, name: 'Діагностика, лікування та супровід осіб із ВІЛ (та підозрою на ВІЛ)' },
+      { no: 22, name: 'Лікування осіб із психічними та поведінковими розладами внаслідок вживання опіоїдів із використанням препаратів замісної підтримувальної терапії' },
+      { no: 72, name: 'Психосоціальна та психіатрична допомога дорослим та дітям у центрах ментального (психічного) здоров’я та мобільними мультидисциплінарними командами' },
+    ],
+  },
+  {
+    title: 'Організаційні пакети',
+    icon: 'clipboard',
+    items: [
+      { no: 50, name: 'Забезпечення кадрового потенціалу системи охорони здоров’я шляхом організації надання медичної допомоги із залученням лікарів-інтернів' },
+      { no: 60, name: 'Медичний огляд осіб, який організовується територіальними центрами комплектування та соціальної підтримки' },
+    ],
+  },
+];
+const PACKAGES_TOTAL = PACKAGE_GROUPS.reduce((sum, g) => sum + g.items.length, 0);
+
+export default function ProgramaMedychnyhGarantijPage() {
+  const d = DASHBOARD;
+
+  return (
+    <>
+      {/* ══════════ PAGE HEADER ══════════ */}
+      <section className="page-header-section relative pt-40 pb-16 lg:pt-48 lg:pb-20 bg-gray-950 overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-br from-gray-950 via-gray-900 to-gray-950"></div>
+        <div className="relative z-10 max-w-screen-xl mx-auto px-6 lg:px-10">
+          <nav className="flex flex-wrap items-center gap-2 text-xs text-white/40 mb-6" aria-label="Хлібні крихти">
+            <Link href="/" className="hover:text-white/70 transition-colors">Головна</Link>
+            <span>/</span>
+            <span className="text-white/70">Публічна інформація</span>
+            <span>/</span>
+            <span className="text-white/70">Програма медичних гарантій</span>
+          </nav>
+          <p className="text-xs font-semibold tracking-widest text-blue-400 uppercase mb-5">Для пацієнтів</p>
+          <h1 className="text-4xl lg:text-5xl font-300 text-white leading-tight">
+            Програма <span className="font-600">медичних гарантій</span>
+          </h1>
+          <span className="accent mt-5"></span>
+        </div>
+      </section>
+
+      {/* ══════════ DASHBOARD ══════════ */}
+      <section className="py-14 lg:py-20 bg-gray-50">
+        <div className="max-w-screen-xl mx-auto px-6 lg:px-10">
+          <div className="grid lg:grid-cols-[minmax(0,400px)_1fr] rounded-2xl overflow-hidden border border-gray-200 shadow-sm bg-white">
+            {/* Left — brand panel */}
+            <div className="bg-[#1f2b47] text-white p-8 lg:p-10 flex flex-col">
+              <div className="flex items-center gap-3">
+                <span className="flex items-center justify-center w-10 h-10 rounded-lg bg-white/10 flex-shrink-0">
+                  <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" strokeWidth="1.6" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M12 3l7 3v5c0 4.5-3 8.5-7 10-4-1.5-7-5.5-7-10V6l7-3z" />
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M12 8v6M9 11h6" />
+                  </svg>
+                </span>
+                <span className="text-sm font-semibold leading-tight">
+                  Національна служба<br />здоров’я України
+                </span>
+              </div>
+
+              <div className="mt-8 border-l-4 border-blue-400 pl-4">
+                <p className="text-lg lg:text-xl font-500 leading-snug">{d.title}</p>
+              </div>
+
+              <div className="mt-6 flex items-center gap-3">
+                <span className="text-3xl font-700 text-blue-300">{PACKAGES_TOTAL}</span>
+                <span className="text-sm text-white/60 leading-snug">пакетів (додатків)<br />до основного договору</span>
+              </div>
+
+              <div className="mt-auto pt-10">
+                <div className="inline-block rounded-lg border border-white/15 px-4 py-2.5 text-center">
+                  <p className="text-[11px] text-white/50">Оновлено</p>
+                  <p className="text-sm font-semibold mt-0.5">{d.updatedAt}</p>
+                </div>
+              </div>
+            </div>
+
+            {/* Right — contracted packages (master / detail) */}
+            <DashboardPackages groups={PACKAGE_GROUPS} year={PACKAGES_YEAR} />
+          </div>
+        </div>
+      </section>
+    </>
+  );
+}

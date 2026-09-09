@@ -22,6 +22,7 @@ export default function Header() {
   const isAnalizGospodarskoyi = pathname === '/analiz-gospodarskoyi-diyalnosti';
   const isZalyshkyLikiv = pathname === '/zalyshky-likarskyh-zasobiv-za-derzhavni-koshty';
   const isObgruntuvannya = pathname === '/obgruntuvannya-2';
+  const isPMG = pathname === '/programa-medychnyh-garantij';
   const isProLikarnyu = isZagalna || isAdministratsiya || isLitsenzijniDokumenty || isViddilennya || isIstoriya || isFotogalereya;
 
   const [navOn, setNavOn] = useState(false);
@@ -218,7 +219,7 @@ export default function Header() {
                 onMouseEnter={() => setOpenMenu('public')}
                 onMouseLeave={() => setOpenMenu((v) => (v === 'public' ? null : v))}
               >
-                <button className={`nav-link nav-link--dropdown${isPlatniPoslugy || isFinansovaDiyalnist || isAnalizGospodarskoyi || isZalyshkyLikiv || isObgruntuvannya ? ' nav-link--active' : ''}`} aria-haspopup="true" aria-expanded={openMenu === 'public'}>
+                <button className={`nav-link nav-link--dropdown${isPlatniPoslugy || isFinansovaDiyalnist || isAnalizGospodarskoyi || isZalyshkyLikiv || isObgruntuvannya || isPMG ? ' nav-link--active' : ''}`} aria-haspopup="true" aria-expanded={openMenu === 'public'}>
                   Публічна інформація
                   <svg className="nav-chevron" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24" aria-hidden="true">
                     <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
@@ -272,6 +273,15 @@ export default function Header() {
                       </span>
                       Держзакупівлі Prozorro ↗
                     </a>
+                  </div>
+                  <div className="dropdown-section dropdown-section--border">
+                    <p className="dropdown-label">Для пацієнтів</p>
+                    <Link href="/programa-medychnyh-garantij" className={`dropdown-item${isPMG ? ' dropdown-item--active' : ''}`} role="menuitem">
+                      <span className="dropdown-icon">
+                        <svg fill="none" stroke="currentColor" strokeWidth="1.5" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" /></svg>
+                      </span>
+                      Програма медичних гарантій
+                    </Link>
                   </div>
                 </div>
               </div>
@@ -374,6 +384,10 @@ export default function Header() {
               <Link href="/platni-poslugy" onClick={closeMobile} className={`mob-item${isPlatniPoslugy ? ' mob-item--active' : ''}`}>Платні послуги</Link>
               <Link href="/finansova-diyalnist" onClick={closeMobile} className={`mob-item${isFinansovaDiyalnist ? ' mob-item--active' : ''}`}>Фінансова діяльність</Link>
               <a href="https://e-tender.ua/prozoro" target="_blank" className="mob-item">Держзакупівлі Prozorro ↗</a>
+            </div>
+            <div className="mob-section">
+              <p className="mob-label">Для пацієнтів</p>
+              <Link href="/programa-medychnyh-garantij" onClick={closeMobile} className={`mob-item${isPMG ? ' mob-item--active' : ''}`}>Програма медичних гарантій</Link>
             </div>
             <div className="mob-section">
               <p className="mob-label">Публікації</p>
