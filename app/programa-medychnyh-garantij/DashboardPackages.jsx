@@ -26,12 +26,18 @@ function GroupIcon({ name }) {
   }
 }
 
+// Темні відтінки — Tailwind slate-* збігаються з палітрою сайту (globals.css):
+// slate-900 #0f172a (фон), slate-800 #1e293b (картка), slate-700 #334155 (рамка),
+// slate-100 #f1f5f9 (текст), slate-400 #94a3b8, blue-400 #60a5fa (акцент).
+// Картки — bg-[#ffffff] (не bg-white), щоб не конфліктувати з `.dark .bg-white`.
+const CARD = 'border bg-[#ffffff] dark:bg-slate-800 border-blue-200 dark:border-slate-700';
+
 export default function DashboardPackages({ groups, year }) {
   const [openIndex, setOpenIndex] = useState(null);
   const current = openIndex === null ? null : groups[openIndex];
 
   return (
-    <div className="bg-[#eef2f6] p-6 lg:p-10">
+    <div className="bg-[#eef2f6] dark:bg-slate-900 p-6 lg:p-10">
       <style>{`
         @keyframes pmgFadeUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
         @keyframes pmgFadeIn { from { opacity: 0; } to { opacity: 1; } }
@@ -50,14 +56,14 @@ export default function DashboardPackages({ groups, year }) {
               type="button"
               onClick={() => setOpenIndex(i)}
               style={{ animationDelay: `${i * 45}ms` }}
-              className="pmg-item group w-full flex items-center gap-5 rounded-2xl border border-blue-200 bg-white px-6 py-5 text-left transition-all duration-200 hover:border-blue-400 hover:shadow-md hover:-translate-y-0.5"
+              className={`pmg-item group w-full flex items-center gap-5 rounded-2xl px-6 py-5 text-left transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md hover:border-blue-400 dark:hover:border-slate-600 ${CARD}`}
             >
-              <span className="flex-shrink-0 text-slate-600 group-hover:text-blue-600 transition-colors">
+              <span className="flex-shrink-0 text-slate-600 dark:text-slate-400 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
                 <GroupIcon name={g.icon} />
               </span>
-              <span className="w-px self-stretch bg-blue-200"></span>
-              <span className="flex-1 text-[15px] text-slate-700 leading-snug">{g.title}</span>
-              <svg className="w-5 h-5 flex-shrink-0 text-slate-300 group-hover:text-blue-500 transition-colors" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+              <span className="w-px self-stretch bg-blue-200 dark:bg-slate-700"></span>
+              <span className="flex-1 text-[15px] text-slate-700 dark:text-slate-100 leading-snug">{g.title}</span>
+              <svg className="w-5 h-5 flex-shrink-0 text-slate-300 dark:text-slate-600 group-hover:text-blue-500 transition-colors" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
               </svg>
             </button>
@@ -69,7 +75,7 @@ export default function DashboardPackages({ groups, year }) {
           <button
             type="button"
             onClick={() => setOpenIndex(null)}
-            className="inline-flex items-center gap-2 text-sm font-medium text-blue-700 hover:text-blue-800"
+            className="inline-flex items-center gap-2 text-sm font-medium text-blue-700 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300"
           >
             <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
@@ -77,12 +83,12 @@ export default function DashboardPackages({ groups, year }) {
             Усі напрями
           </button>
 
-          <div className="flex items-center gap-5 rounded-2xl border border-blue-300 bg-white px-6 py-5">
-            <span className="flex-shrink-0 text-blue-600">
+          <div className={`flex items-center gap-5 rounded-2xl px-6 py-5 border-blue-300 dark:border-slate-600 ${CARD}`}>
+            <span className="flex-shrink-0 text-blue-600 dark:text-blue-400">
               <GroupIcon name={current.icon} />
             </span>
-            <span className="w-px self-stretch bg-blue-200"></span>
-            <span className="flex-1 text-[15px] font-700 text-slate-900 leading-snug">{current.title}</span>
+            <span className="w-px self-stretch bg-blue-200 dark:bg-slate-700"></span>
+            <span className="flex-1 text-[15px] font-700 text-slate-900 dark:text-slate-100 leading-snug">{current.title}</span>
           </div>
 
           <div className="flex flex-col gap-2">
@@ -90,14 +96,14 @@ export default function DashboardPackages({ groups, year }) {
               <div
                 key={item.no}
                 style={{ animationDelay: `${80 + i * 50}ms` }}
-                className="pmg-item rounded-xl border border-blue-200/70 bg-white px-5 py-3.5 text-sm text-slate-700 leading-snug"
+                className={`pmg-item rounded-xl px-5 py-3.5 text-sm text-slate-700 dark:text-slate-200 leading-snug ${CARD}`}
               >
                 {item.name}
               </div>
             ))}
           </div>
 
-          <p className="text-xs text-slate-400">
+          <p className="text-xs text-slate-400 dark:text-slate-500">
             Дата змін: {year} рік. Перелік відповідає додаткам до основного договору з НСЗУ.
           </p>
         </div>
